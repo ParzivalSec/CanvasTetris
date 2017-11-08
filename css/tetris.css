@@ -12,11 +12,43 @@ html, body {
 	z-index: 1;
 }
 
-#rotate {
+#help {
+	left: 45%;
+	width: calc(100% / 12);
+	height: calc(100% / 22);
+	position: absolute;
+	z-index: 3;
+}
+
+.controller_panel {
+	border-color: black;
+	border-width: 2px;
+
+}
+
+.help_text {
+	top: 30%;
 	width: 100%;
-	height: 25%;
+	position: absolute;
+	overflow: hidden;  
+	text-align: center;
+}
+
+span a {
+    color:#fff;
+    display:inline-block;
+   
+   font-size: 32px;
+    margin: 10px 10px 0 0;
+    padding: 10px 10px
+}
+
+#rotate {
+	top: 5%;
+	width: 100%;
+	height: 20%;
 	background-color: magenta;
-	opacity: 0.1;
+	opacity: 0;
 	position: absolute;
 	z-index: 2;
 }
@@ -26,7 +58,7 @@ html, body {
 	width: 50%;
 	height: 50%;
 	background-color: green;
-	opacity: 0.1;
+	opacity: 0;
 	position: absolute;
 	z-index: 2;
 }
@@ -37,7 +69,7 @@ html, body {
 	width: 50%;
 	height: 50%;
 	background-color: red;
-	opacity: 0.1;
+	opacity: 0;
 	position: absolute;
 	z-index: 2;
 }
@@ -47,7 +79,11 @@ html, body {
 	width: 100%;
 	height: 25%;
 	background-color: blue;
-	opacity: 0.1;
+	opacity: 0;
 	position: absolute;
 	z-index: 2;
+}
+
+.hidden {
+	opacity: 0;
 }

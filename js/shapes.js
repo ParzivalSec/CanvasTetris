@@ -1,37 +1,5 @@
 // See this: http://codeincomplete.com/posts/javascript-tetris/ for better shapes (solves rotation problem)
 
-var shapeColors = ['black', 'green', 'blue', 'red', 'yellow', 'cyan', 'magenta', 'orange'];
-
-class Shape {
-	constructor(cell_offsets, shapeId) {
-		this.shapeId = shapeId;
-		this.cells = cell_offsets;
-	}
-	
-	setOrigin(origin_x, origin_y) {
-		this.cx = origin_x;
-		this.cy = origin_y;
-	}
-	
-	cells() {
-		return this.cells;
-	}
-	
-	id() {
-		return this.shapeId;
-	}
-}
-
-var shapes = [
-	new Shape([[-1, 0], [0, 0], [1, 0], [2, 0]], 1), // straight line
-	new Shape([[-1, 0], [0, 0], [-1, 1], [0, 1]], 2), // square
-	new Shape([[-1, 0], [0, 0], [0, 1], [1, 0]], 3), // tee
-	new Shape([[-1, 0], [0, 0], [1, 0], [1, 1]], 4), // L normal
-	new Shape([[-1, 0], [-1, 1], [0, 0], [1, 0]], 5), // L mirrored
-	new Shape([[-1, 0], [0, 0], [0, 1], [1, 1]], 6), // zig-zag normal
-	new Shape([[-1, 1], [0, 1], [0, 0], [1, 0]], 7) // zig-zag mirrored
-];
-
 // Better shapes for rotation
 // Each rotation kind can be represented as an 16bit int (4 times 4 grid for shapes)
 // To rotate we only have to switch the index to the blocks array
@@ -59,17 +27,45 @@ function eachblock(type, x, y, dir, cb) {
 };
 
 // Whether a piece can be placed at a position or not
-function occupied(type, x, y, dir) {
-  var result = false
+function occupied(type, x, y, ox, oy, dir, oldDir, board) {
+  var newCells = [];
   eachblock(type, x, y, dir, function(x, y) {
-    if ((x < 0) || (x >= nx) || (y < 0) || (y >= ny) || getBlock(x,y))
-      result = true;
+		newCells.push({ x, y });
   });
-  return result;
+  
+  var oldCells = [];
+  eachblock(type, ox, oy, oldDir, function(nx, ny) {
+		oldCells.push({x: nx, y: ny });
+  });
+  
+  var diffCells = [];
+  for (var i = 0; i < newCells.length; i++) {
+	  var isDiff = true;
+	  for (var j = 0; j < oldCells.length; j++) {
+			if (oldCells[j].x === newCells[i].x && oldCells[j].y === newCells[i].y) {
+				isDiff = false;
+				break;
+			}
+	  }
+	  
+	  if (isDiff) {
+		  diffCells.push({ x: newCells[i].x, y: newCells[i].y});
+	  }
+  }
+
+  for (var c = 0; c < diffCells.length; c++) {
+	  if ((diffCells[c].x < 1) || (diffCells[c].x >= 11) || 
+	      (diffCells[c].y < 1) || (diffCells[c].y >= 21) || 
+		  board.cellAt(diffCells[c].x, diffCells[c].y).color !== 'black') {
+				return true;  
+		  }
+  }
+  
+  return false;
 };
 
-function unoccupied(type, x, y, dir) {
-  return !occupied(type, x, y, dir);
+function unoccupied(type, x, y, ox, oy, dir, oldDir, board) {
+  return !occupied(type, x, y, ox, oy, dir, oldDir, board);
 };
 
 var shapes = [i, j, l, o, s, t, z];
