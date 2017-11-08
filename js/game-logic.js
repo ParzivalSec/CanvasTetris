@@ -1,27 +1,47 @@
-var board = new Board(10, 20, 300, 600);
+var renderer = new Renderer(10, 20);
+var tetris = new Game();
+var tickTime = 0;
+var dropTime = 0.5;
+
+// Controller related action handlers
+$('#rotate').click(function() {
+	tetris.rotate();
+});
+
+$('#left').click(function() {
+	tetris.left();
+});
+
+$('#right').click(function() {
+	tetris.right();
+});
+
+$('#down').on('touchstart', function() {
+	dropTime = 0.05;
+});
+
+$('#down').on('touchend', function() {
+	dropTime = 0.5;
+});
 
 $(document).ready(function() {
-	board.init();
+	tetris.init();
 	
-	var currentBoard = board.asArray();
-	var blockDimensions = board.getBlockDimensions();
-	
-	var currentShape = shapes[0];
-	for (var i = 0; i < 4; i++) {
-		board.setCell(5 + currentShape.cells[i][0] + 1, 0 + currentShape.cells[i][1] + 1, currentShape.id());
-	}
-	
-	for (var y = 0; y < currentBoard.length; y++) {
-		var row = currentBoard[y];
-		for (var x = 0; x < row.length; x++) {
-			var cellValue = currentBoard[y][x];
-			if (cellValue === -1) {
-				drawBlock(x, y, blockDimensions.w, blockDimensions.h, 'grey', 'black');
-			} else if (cellValue === 0) {
-				drawBlock(x, y, blockDimensions.w, blockDimensions.h, 'black', 'black');
-			} else {
-				drawBlock(x, y, blockDimensions.w, blockDimensions.h, shapeColors[cellValue], 'black');
-			}
-		}
-	}
+	tetris.lastFrameTime = performance.now();
+    // console.log(tetris.lastFrameTime)
+    window.requestAnimationFrame(Loop);
 });
+
+function Loop(timeStamp) {
+	var dt = (timeStamp - tetris.lastFrameTime) / 1000;
+   
+	if (tickTime >= dropTime) {
+	    tetris.tick(dt);
+		tetris.draw(renderer);
+		tickTime = 0;		
+	}
+	
+	tickTime += dt;
+    tetris.lastFrameTime = timeStamp;
+    window.requestAnimationFrame(Loop);
+}

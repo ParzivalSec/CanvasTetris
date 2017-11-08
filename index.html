@@ -2,15 +2,23 @@
 <html>
 	<head>
 		<title>HTML5 Canvas Tetris - Lukas Vogl</title>
-        <meta name='viewport' content='width=device-width, height=device-height, initial-scale=1' />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+		<link rel='stylesheet' type='text/css' href='css/tetris.css' />
 	</head>
 	<body>
-		<canvas id='board' width='300' height='600'></canvas>
+		<canvas id='board'></canvas>
+		<div id='controller'>
+			<div id='rotate'></div>
+			<div id='left'></div>
+			<div id='right'></div>
+			<div id='down'></div>
+		</div>
 	
 	<script src='js/jquery.js' type='text/javascript'></script>
 	<script src='js/board.js' type='text/javascript'></script>
 	<script src='js/shapes.js' type='text/javascript'></script>
 	<script src='js/render.js' type='text/javascript'></script>
+	<script src='js/game.js' type='text/javascript'></script>
 	<script src='js/game-logic.js' type='text/javascript'></script>
 	
 	</body>
