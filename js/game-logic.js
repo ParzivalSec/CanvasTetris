@@ -20,6 +20,40 @@ $('#help').click(function() {
 	}
 });
 
+$(document).keydown(function(e) {
+    switch(e.which) {
+		case 37: // left
+			tetris.left();
+        break;
+
+		case 38: // up
+			tetris.rotate();
+        break;
+
+		case 39: // right
+			tetris.right();
+        break;
+
+		case 40: // down
+			dropTime = 0.05;
+        break;
+
+        default: return; // exit this handler for other keys
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+});
+
+$(document).keyup(function(e) {
+    switch(e.which) {
+		case 40: // down
+			dropTime = 0.5;
+        break;
+
+        default: return; // exit this handler for other keys
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+});
+
 // Controller related action handlers
 $('#rotate').click(function() {
 	tetris.rotate();

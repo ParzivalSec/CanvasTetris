@@ -50,7 +50,7 @@ class Board {
 			}	
 		}
 		
-		for (var y = this.rows - 2; y >= 1; y--) {
+		for (var y = row; y >= 2; y--) {
 			for (var x = 1; x < this.cols - 1; x++) {				
 				if (this.board[y][x].color === 'black' && this.board[y - 1][x].color === 'black')
 				{

@@ -25,16 +25,17 @@ class Game {
 	
 	lose() {
 		this.running = false;
+		$('#game_over').css('opacity', 0.5);
 	}
 	
 	spawnShape() {
 		var s = Math.floor(Math.random() * (shapes.length - 1 + 1) + 0);
 		this.shape.type = shapes[s];
-		console.log(this.shape);
 		this.shape.rotationIndex = 0;
 		this.shape.x = this.spawnX;
 		this.shape.y = this.spawnY;
-		
+		console.log(this.shape);
+
 		// Assign this to self variable to capture it in the scope of the callback function
 		var self = this;
 		eachblock(this.shape.type, 
@@ -45,9 +46,10 @@ class Game {
 				self.board.setCell(x, y, { color: self.shape.type.color, dirty: true });
 			}
 		);
-		
-		var ox = this.shape.x, oy = this.shape.y;
-		if (occupied(this.shape.type, this.shape.x, this.shape.y + 1, ox, oy, 0, 0, this.board)) {
+
+		console.log(this.spawnX, this.spawnY);
+		if (occupied(this.shape.type, this.spawnX, this.spawnY + 1, this.spawnX, this.spawnY, 0, 0, this.board)) {
+			console.log(this.board.cellAt(this.spawnX, this.spawnY).color)
 			var self = this;
 			eachblock(this.shape.type, 
 				this.shape.x, 
@@ -111,6 +113,8 @@ class Game {
 	}
 	
 	left() {
+		if (!this.running) return;
+
 		var ox = this.shape.x, oy = this.shape.y;
 		var dir = this.shape.rotationIndex;
 		if (unoccupied(this.shape.type, this.shape.x - 1, this.shape.y, ox, oy, dir, dir, this.board)) {
@@ -120,6 +124,8 @@ class Game {
 	}
 	
 	right() {
+		if (!this.running) return;
+
 		var ox = this.shape.x, oy = this.shape.y;
 		var dir = this.shape.rotationIndex;
 		if (unoccupied(this.shape.type, this.shape.x + 1, this.shape.y, ox, oy, dir, dir, this.board)) {
@@ -129,6 +135,8 @@ class Game {
 	}
 	
 	rotate() {
+		if (!this.running) return;
+
 		var ox = this.shape.x, oy = this.shape.y;
 		var oldDir = this.shape.rotationIndex;
 		var newDir = this.shape.rotationIndex + 1 > 3 ? 0 : this.shape.rotationIndex + 1;
